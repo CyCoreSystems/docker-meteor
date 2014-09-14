@@ -6,6 +6,7 @@ Features:
  * Bind-mount, volume, Dockerfile `ADD` via environment variable (`APP_DIR`)
  * Uses docker-linked MongoDB (i.e. `MONGO_PORT`...) or explicit setting via environment variable (`MONGO_URL`)
  * Optionally specify the port on which the web server should run (`PORT`); defaults to 80
+ * Deploy-key support (for Github) (set `GITHUB_DEPLOY_KEY` to the location of your keyfile)
 
 Example run:
 

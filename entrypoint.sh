@@ -16,6 +16,19 @@ if [ $? -gt 1 ]; then
    exec "$@"
 fi
 
+# If we are provided a GITHUB_DEPLOY_KEY (path), then
+# copy it into /root/.ssh and setup a github rule to use it
+if [ -n "${GITHUB_DEPLOY_KEY}" ]; then
+   if [ ! -f /root/.ssh/${GITHUB_DEPLOY_KEY} ]; then
+      mkdir -p /root/.ssh
+      cp ${GITHUB_DEPLOY_KEY} /root/.ssh/
+      cat << ENDHERE >> /root/.ssh/config
+Host github.com
+  Identity /root/.ssh/${GITHUB_DEPLOY_KEY}
+ENDHERE
+   fi
+fi
+
 mkdir -p /usr/src
 
 if [ -n "${REPO}" ]; then
