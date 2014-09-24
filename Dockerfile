@@ -1,5 +1,5 @@
 # DOCKER-VERSION 1.1.0
-# METEOR-VERSION 0.9.0.1
+# METEOR-VERSION 0.9.2.2
 FROM stackbrew/ubuntu:trusty
 
 RUN apt-get update
@@ -32,6 +32,9 @@ RUN curl https://install.meteor.com/ |sh
 # Install entrypoint
 ADD entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
+
+# Add known_hosts file
+ADD known_hosts /root/.ssh/known_hosts
 
 EXPOSE 80
 

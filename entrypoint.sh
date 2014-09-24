@@ -17,14 +17,21 @@ if [ $? -gt 1 ]; then
 fi
 
 # If we are provided a GITHUB_DEPLOY_KEY (path), then
-# copy it into /root/.ssh and setup a github rule to use it
+# change it to the new, generic DEPLOY_KEY
 if [ -n "${GITHUB_DEPLOY_KEY}" ]; then
-   if [ ! -f /root/.ssh/${GITHUB_DEPLOY_KEY} ]; then
+   DEPLOY_KEY=$GITHUB_DEPLOY_KEY
+fi
+
+# If we are given a DEPLOY_KEY, copy it into /root/.ssh and
+# setup a github rule to use it
+if [ -n "${DEPLOY_KEY}" ]; then
+   if [ ! -f /root/.ssh/deploy_key ]; then
       mkdir -p /root/.ssh
-      cp ${GITHUB_DEPLOY_KEY} /root/.ssh/
+      cp ${DEPLOY_KEY} /root/.ssh/deploy_key
       cat << ENDHERE >> /root/.ssh/config
-Host github.com
-  Identity /root/.ssh/${GITHUB_DEPLOY_KEY}
+Host *
+  IdentityFile /root/.ssh/deploy_key
+  StrictHostKeyChecking no
 ENDHERE
    fi
 fi
@@ -47,9 +54,16 @@ if [ -n "${REPO}" ]; then
    git checkout ${BRANCH}
 
    # Bundle the Meteor app
-   mkdir -p /var/www/bundle
-   meteor bundle --directory /var/www/bundle
-
+   mkdir -p ${APP_DIR}
+   set +e # Allow the next command to fail
+   meteor build --directory ${APP_DIR}
+   if [ $? -ne 0 ]; then
+      set -e
+      # Old versions used 'bundle' and didn't support the --directory option
+      meteor bundle bundle.tar.gz
+      tar xf bundle.tar.gz -C ${APP_DIR}
+   fi
+   set -e
 fi
 
 if [ -n "${BUNDLE_URL}" ]; then
