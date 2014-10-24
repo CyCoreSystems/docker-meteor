@@ -1,5 +1,5 @@
-# DOCKER-VERSION 1.1.0
-# METEOR-VERSION 0.9.2.2
+# DOCKER-VERSION 1.2.0
+# METEOR-VERSION 0.9.4
 FROM stackbrew/ubuntu:trusty
 
 RUN apt-get update
