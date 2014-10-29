@@ -1,4 +1,4 @@
-Features:
+## Features:
 
  * Meteor 1.0 package/bundle support
  * Git-based repository + branch/tag via environment variables (`REPO` and `BRANCH`)
@@ -9,7 +9,13 @@ Features:
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
 
-Example run:
+## Versions:
+
+Regardless of the version number of the tool included in this package, your application will run
+on whatever version of Meteor it is configured to run under.
+
+## Example run:
 
 `docker run --rm -e ROOT_URL=http://testsite.com -e REPO=https://github.com/yourName/testsite -e BRANCH=testing -e MONGO_URL=mongodb://mymongoserver.com:27017 ulexus/meteor`
 
+There is also a sample systemd unit file in the Github repository.
