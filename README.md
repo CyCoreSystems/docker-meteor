@@ -1,6 +1,6 @@
 Features:
 
- * Meteor 0.9.x package/bundle support
+ * Meteor 1.0 package/bundle support
  * Git-based repository + branch/tag via environment variables (`REPO` and `BRANCH`)
  * Bundle URL via environment variable (`BUNDLE_URL`)
  * Bind-mount, volume, Dockerfile `ADD` via environment variable (`APP_DIR`)
