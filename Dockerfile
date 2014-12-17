@@ -16,8 +16,8 @@ RUN apt-get install -y build-essential nodejs
 #RUN ln -s /usr/bin/nodejs /usr/bin/node
 ###
 
-# Install git and curl
-RUN apt-get install -y git curl
+# Install git, curl, and python
+RUN apt-get install -y git curl python
 
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
