@@ -10,6 +10,7 @@ set -e
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
 : ${PORT:="80"}
 
+export MONGO_URL
 
 # If we were given arguments, run them instead
 if [ $? -gt 1 ]; then
