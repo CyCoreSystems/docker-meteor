@@ -54,6 +54,14 @@ if [ -n "${REPO}" ]; then
    echo "Switching to branch/tag ${BRANCH}..."
    git checkout ${BRANCH}
 
+   # Find the meteor installation within the repo
+   METEOR_DIR=$(find ./ -name .meteor -print |head -n1)
+   if [ ! -n "${METEOR_DIR}" ]; then
+      echo "Failed to locate Meteor path"
+      exit 1;
+   fi
+   cd ${METEOR_DIR}/..
+
    # Bundle the Meteor app
    mkdir -p ${APP_DIR}
    set +e # Allow the next command to fail
