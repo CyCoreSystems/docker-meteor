@@ -8,6 +8,7 @@
  * Optionally specify the port on which the web server should run (`PORT`); defaults to 80
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
+ * Non-root location of Meteor tree; the script will search for the first .meteor directory
 
 ## Versions:
 

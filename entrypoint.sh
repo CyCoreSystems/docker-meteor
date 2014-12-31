@@ -55,7 +55,7 @@ if [ -n "${REPO}" ]; then
    git checkout ${BRANCH}
 
    # Find the meteor installation within the repo
-   METEOR_DIR=$(find ./ -name .meteor -print |head -n1)
+   METEOR_DIR=$(find ./ -type d -name .meteor -print |head -n1)
    if [ ! -n "${METEOR_DIR}" ]; then
       echo "Failed to locate Meteor path"
       exit 1;
