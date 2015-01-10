@@ -8,10 +8,11 @@ set -e
 : ${APP_DIR:="/var/www"}
 : ${BRANCH:="master"}
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
-: ${MONGO_OPLOG_URL:="${MONGO_URL}"}
+: ${MONGO_OPLOG_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27107_TCP_PORT}/local"}
 : ${PORT:="80"}
 
 export MONGO_URL
+export MONGO_OPLOG_URL
 
 # If we were given arguments, run them instead
 if [ $? -gt 1 ]; then
