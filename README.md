@@ -1,6 +1,6 @@
 ## Features:
 
- * Meteor 1.0 package/bundle support
+ * Meteor 1.x package/bundle support
  * Git-based repository + branch/tag via environment variables (`REPO` and `BRANCH`)
  * Bundle URL via environment variable (`BUNDLE_URL`)
  * Bind-mount, volume, Dockerfile `ADD` via environment variable (`APP_DIR`)
@@ -9,6 +9,7 @@
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
  * Non-root location of Meteor tree; the script will search for the first .meteor directory
+ * PhantomJS pre-installed to support `spiderable` package
 
 ## Versions:
 
