@@ -5,7 +5,7 @@
  * Bundle URL via environment variable (`BUNDLE_URL`)
  * Bind-mount, volume, Dockerfile `ADD` via environment variable (`APP_DIR`)
  * Uses docker-linked MongoDB (i.e. `MONGO_PORT`...) or explicit setting via environment variable (`MONGO_URL`)
- * Enables oplog tailing with `MONGO_OPLOG_URL`, which defaults to whatever `MONGO_URL` is
+ * Enables oplog tailing with `MONGO_OPLOG_URL`, which defaults to the `local` database of the docker `MONGO_PORT`... variables
  * Optionally specify the port on which the web server should run (`PORT`); defaults to 80
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
