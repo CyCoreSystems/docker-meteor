@@ -6,6 +6,7 @@
  * Bind-mount, volume, Dockerfile `ADD` via environment variable (`APP_DIR`)
  * Uses docker-linked MongoDB (i.e. `MONGO_PORT`...) or explicit setting via environment variable (`MONGO_URL`)
  * Enables oplog tailing with `MONGO_OPLOG_URL`, which defaults to the `local` database of the docker `MONGO_PORT`... variables
+   * NOTE:  the `MONGO_OPLOG_URL` seems to be very particular.  The entrypoint script makes a very simple attempt at determining its proper value, but if the mongo link is not perfectly-suited (name the link `mongo`), it will cause Meteor to crash and not run at all.  I highly recommend setting `MONGO_OPLOG_URL` explicitly.  I'm strongly tempted to simply remove the default value, which will merely cause a fall-back to polling... feedback would be appreciated on this.
  * Optionally specify the port on which the web server should run (`PORT`); defaults to 80
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
