@@ -8,7 +8,7 @@ set -e
 : ${APP_DIR:="/var/www"}
 : ${BRANCH:="master"}
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
-: ${MONGO_OPLOG_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27107_TCP_PORT}/local?authSource=admin"}
+: ${MONGO_OPLOG_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/local?authSource=admin"}
 : ${PORT:="80"}
 
 export MONGO_URL
