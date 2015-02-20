@@ -1,33 +1,24 @@
 # DOCKER-VERSION 1.4.1
 # METEOR-VERSION 1.0.3.1
-FROM stackbrew/ubuntu:trusty
+FROM gliderlabs/alpine
 
-RUN apt-get update
+# Install node, git (minimalist version: no phantomjs)
+RUN apk-install nodejs git
 
-### For latest Node
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:chris-lea/node.js
-RUN apt-get update
-RUN apt-get install -y build-essential nodejs
-###
-
-### For standard Ubuntu Node
-#RUN apt-get install -y build-essential nodejs npm
-#RUN ln -s /usr/bin/nodejs /usr/bin/node
-###
-
-# Install git, curl, python, and phantomjs
-RUN apt-get install -y git curl python phantomjs
-
-# Make sure we have a directory for the application
-RUN mkdir -p /var/www
-RUN chown -R www-data:www-data /var/www
+# Build dependencies
+RUN apk-install --virtual build-dependencies python-dev build-base curl \
+   && npm install -g fibers \
+   && curl https://install.meteor.com/ |sh \
+   && apk del build-dependencies
 
 # Install fibers -- this doesn't seem to do any good, for some reason
-RUN npm install -g fibers
+#RUN npm install -g fibers
 
 # Install Meteor
-RUN curl https://install.meteor.com/ |sh
+#RUN curl https://install.meteor.com/ |sh
+
+# Remove build dependencies
+#RUN apk del build-dependencies
 
 # Install entrypoint
 ADD entrypoint.sh /usr/bin/entrypoint.sh
@@ -35,6 +26,9 @@ RUN chmod +x /usr/bin/entrypoint.sh
 
 # Add known_hosts file
 ADD known_hosts /root/.ssh/known_hosts
+
+# Make sure we have a directory for the application
+RUN mkdir -p /var/www
 
 EXPOSE 80
 
