@@ -11,6 +11,7 @@ set -e
 : ${PORT:="80"}
 
 export MONGO_URL
+export PORT
 
 # If we were given arguments, run them instead
 if [ $? -gt 1 ]; then
