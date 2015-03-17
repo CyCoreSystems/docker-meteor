@@ -77,7 +77,7 @@ fi
 
 if [ -n "${BUNDLE_URL}" ]; then
    echo "Getting Meteor bundle..."
-   wget -O /tmp/bundle.tgz ${BUNDLE_URL}
+   curl -o /tmp/bundle.tgz ${BUNDLE_URL}
    tar xf /tmp/bundle.tgz -C ${APP_DIR}
 fi
 
