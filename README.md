@@ -17,8 +17,15 @@
 Regardless of the version number of the tool included in this package, your application will run
 on whatever version of Meteor it is configured to run under.
 
-## Example run:
+## Examples:
 
+### git repo with non-default (master) branch
 `docker run --rm -e ROOT_URL=http://testsite.com -e REPO=https://github.com/yourName/testsite -e BRANCH=testing -e MONGO_URL=mongodb://mymongoserver.com:27017 ulexus/meteor`
 
-There is also a sample systemd unit file in the Github repository.
+### local directory on host (/home/user/myapp)
+`docker run --rm -e ROOT_URL=http://testsite.com -e APP_DIR=/app -v /home/user/myapp:/app -e MONGO_URL=mongodb:/mymongoserver.com:27017 ulexus/meteor`
+
+### Unit file
+
+There is also a sample systemd [unit file](meteor@.service) in the Github repository.
+
