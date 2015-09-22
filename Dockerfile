@@ -1,5 +1,5 @@
 # DOCKER-VERSION 1.6.2
-# METEOR-VERSION 1.1.0.3
+# METEOR-VERSION 1.2.0
 FROM ubuntu:trusty
 
 RUN apt-get update
