@@ -10,7 +10,7 @@
  * Deploy-key support (set `DEPLOY_KEY` to the location of your SSH key file)
    * old `GITHUB_DEPLOY_KEY` is also supported but deprecated
  * Non-root location of Meteor tree; the script will search for the first .meteor directory
- * PhantomJS pre-installed to support `spiderable` package
+ * _NOTE_: PhantomJS is no longer pre-installed.  This package was swelling the size of the image by 50%, and it is not maintainable with the standard Docker Node images.  Instead, please use one of the docker-friendly (read port-based) spiderable packages on Meteor, such as `ongoworks:spiderable`;  if there is demand, please create an issue on Github, and I'll see about managing a separate branch for it.
 
 ## Versions:
 
