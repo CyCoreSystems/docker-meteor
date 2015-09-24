@@ -1,14 +1,14 @@
-# DOCKER-VERSION 1.6.2
-# METEOR-VERSION 1.2.0
-FROM ubuntu:trusty
+# DOCKER-VERSION 1.8.1
+# METEOR-VERSION 1.2.0.1
+FROM node:slim
 
 RUN apt-get update
 
 ### For latest Node
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:chris-lea/node.js
-RUN apt-get update
-RUN apt-get install -y build-essential nodejs
+#RUN apt-get install -y software-properties-common
+#RUN add-apt-repository -y ppa:chris-lea/node.js
+#RUN apt-get update
+#RUN apt-get install -y build-essential nodejs
 ###
 
 ### For standard Ubuntu Node
@@ -17,14 +17,15 @@ RUN apt-get install -y build-essential nodejs
 ###
 
 # Install git, curl, python, and phantomjs
-RUN apt-get install -y git curl python phantomjs
+#RUN apt-get install -y git curl python phantomjs
+RUN apt-get install -y git curl python
 
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
 RUN chown -R www-data:www-data /var/www
 
 # Install fibers -- this doesn't seem to do any good, for some reason
-RUN npm install -g fibers
+#RUN npm install -g fibers
 
 # Install Meteor
 RUN curl https://install.meteor.com/ |sh
