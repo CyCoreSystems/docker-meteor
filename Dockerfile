@@ -25,7 +25,7 @@ RUN mkdir -p /var/www
 RUN chown -R www-data:www-data /var/www
 
 # Install fibers -- this doesn't seem to do any good, for some reason
-#RUN npm install -g fibers
+RUN npm install -g fibers
 
 # Install Meteor
 RUN curl https://install.meteor.com/ |sh
