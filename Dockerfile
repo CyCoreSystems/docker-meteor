@@ -1,6 +1,6 @@
 # DOCKER-VERSION 1.8.1
 # METEOR-VERSION 1.2.0.1
-FROM node:slim
+FROM debian:jessie
 
 RUN apt-get update
 
@@ -19,6 +19,10 @@ RUN apt-get update
 # Install git, curl, python, and phantomjs
 #RUN apt-get install -y git curl python phantomjs
 RUN apt-get install -y git curl python
+
+# Install latest Node from nodesource
+RUN curl https://deb.nodesource.com/setup | sh
+RUN apt-get install -y nodejs
 
 # Make sure we have a directory for the application
 RUN mkdir -p /var/www
