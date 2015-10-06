@@ -64,10 +64,12 @@ if [ -n "${REPO}" ]; then
    cd ${METEOR_DIR}/..
 
    # Bundle the Meteor app
+   echo "Building the bundle..."
    mkdir -p ${APP_DIR}
    set +e # Allow the next command to fail
    meteor build --directory ${APP_DIR}
    if [ $? -ne 0 ]; then
+      echo "Building the bundle (old version)..."
       set -e
       # Old versions used 'bundle' and didn't support the --directory option
       meteor bundle bundle.tar.gz
@@ -90,6 +92,7 @@ fi
 
 # Install NPM modules
 if [ -e ${APP_DIR}/programs/server ]; then
+   echo "Installing NPM prerequisites..."
    pushd ${APP_DIR}/programs/server/
    npm install
    popd
@@ -99,4 +102,5 @@ fi
 
 # Run meteor
 cd ${APP_DIR}
+echo "Starting Meteor..."
 exec node ./main.js
