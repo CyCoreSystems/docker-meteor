@@ -45,6 +45,8 @@ if [ -n "${REPO}" ]; then
    if [ -e /usr/src/app/.git ]; then
       pushd /usr/src/app
       git fetch
+      git reset --hard origin/${BRANCH}
+      git clean -d -f
       popd
    else
       git clone ${REPO} /usr/src/app
