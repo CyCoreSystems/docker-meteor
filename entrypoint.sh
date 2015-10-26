@@ -41,14 +41,13 @@ fi
 mkdir -p /usr/src
 
 if [ -n "${REPO}" ]; then
-   echo "Getting ${REPO}..."
    if [ -e /usr/src/app/.git ]; then
       pushd /usr/src/app
+      echo "Updating local repository..."
       git fetch
-      git reset --hard origin/${BRANCH}
-      git clean -d -f
       popd
    else
+      echo "Getting ${REPO}..."
       git clone ${REPO} /usr/src/app
    fi
 
@@ -56,6 +55,11 @@ if [ -n "${REPO}" ]; then
 
    echo "Switching to branch/tag ${BRANCH}..."
    git checkout ${BRANCH}
+
+   echo "Forcing clean..."
+   git reset --hard origin/${BRANCH}
+   git clean -d -f
+   pushd /usr/src/app
 
    # Find the meteor installation within the repo
    METEOR_DIR=$(find ./ -type d -name .meteor -print |head -n1)
