@@ -4,18 +4,6 @@ FROM debian:jessie
 
 RUN apt-get update
 
-### For latest Node
-#RUN apt-get install -y software-properties-common
-#RUN add-apt-repository -y ppa:chris-lea/node.js
-#RUN apt-get update
-#RUN apt-get install -y build-essential nodejs
-###
-
-### For standard Ubuntu Node
-#RUN apt-get install -y build-essential nodejs npm
-#RUN ln -s /usr/bin/nodejs /usr/bin/node
-###
-
 # Install git, curl, python, and phantomjs
 #RUN apt-get install -y git curl python phantomjs
 RUN apt-get install -y git curl python
