@@ -1,5 +1,5 @@
 # DOCKER-VERSION 1.8.1
-# METEOR-VERSION 1.2.0.2
+# METEOR-VERSION 1.2.1
 FROM debian:jessie
 
 RUN apt-get update
