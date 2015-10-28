@@ -1,0 +1,28 @@
+[Unit]
+Description=%p - %i
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --name %p -p ${PORT}:${PORT} \
+   -v /etc/meteor:/etc/meteor \
+   -e DEPLOY_KEY=/etc/meteor/deploy.key \
+   -e BIND_IP=0.0.0.0 \
+   -e ROOT_URL=https://myapp.mydomain.com \
+   -e PORT=3000 \
+   -e REPO=git@github.com:MyOrg/myrepo.git \
+   -e BRANCH=prod \
+   -e MONGO_URL=mongodb://x.y.com:27017,y.z.com:27017,10.40.80.120:27017/theappdb \
+   -e MONGO_OPLOG_URL=mongodb://y.z.com:27017,10.40.80.120:27017/local \
+   ulexus/meteor
+ExecStopPost=-/usr/bin/docker stop %p
+ExecStopPost=-/usr/bin/docker rm %p
+Restart=always
+RestartSec=10s
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+[X-Fleet]
+Conflicts=meteor.myapp*
