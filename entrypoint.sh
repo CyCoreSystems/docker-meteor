@@ -78,7 +78,7 @@ if [ -n "${METEOR_DIR}" ]; then
 
    # Install Meteor tool
    echo "Installing latest Meteor tool..."
-   curl https://install.meteor.com/ |sh
+   curl ${CURL_OPTS} https://install.meteor.com/ |sh
 
    # Bundle the Meteor app
    echo "Building the bundle..."
@@ -99,7 +99,7 @@ fi
 # from there.
 if [ -n "${BUNDLE_URL}" ]; then
    echo "Getting Meteor bundle..."
-   curl -o /tmp/bundle.tgz ${BUNDLE_URL}
+   curl ${CURL_OPTS} -o /tmp/bundle.tgz ${BUNDLE_URL}
    tar xf /tmp/bundle.tgz -C ${APP_DIR}
 fi
 
