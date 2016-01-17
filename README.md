@@ -4,6 +4,7 @@
  * Bundle-based execution
    * directory referenced as `APP_DIR` (meteor build --directory); defaults to `/var/www`
    * downloaded with `curl` from `BUNDLE_URL` (if supplied)
+   * set `CURL_OPTS` if you need to pass additional parameters
  * Source-based build/execution
    * Downloads latest Meteor tool at runtime (always the latest tool version, but apps run with their own versions)
    * Supply source at `SRC_DIR` (defaults to `/src/app`)
