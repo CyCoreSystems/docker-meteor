@@ -24,6 +24,8 @@
 The Meteor tool (if required) is now downloaded at runtime, so it is no longer packaged and the version of this docker image does
 not matter for the version of meteor.
 
+You can specify which version of Meteor you want to be installed by setting the `RELEASE` as required.
+
 ## Modes of operation
 
 There are three basic modes of operation for this image:
