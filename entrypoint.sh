@@ -10,6 +10,7 @@ set -e
 : ${BRANCH:="master"}
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
 : ${PORT:="80"}
+: ${RELEASE:="latest"}
 
 export MONGO_URL
 export PORT
@@ -76,9 +77,18 @@ if [ -n "${METEOR_DIR}" ]; then
    echo "Meteor source found in ${METEOR_DIR}"
    cd ${METEOR_DIR}/..
 
+   # Download Meteor installer
+   echo "Downloading Meteor install script..."
+   curl ${CURL_OPTS} -o /tmp/meteor.sh https://install.meteor.com/
+
    # Install Meteor tool
-   echo "Installing latest Meteor tool..."
-   curl ${CURL_OPTS} https://install.meteor.com/ |sh
+   echo "Installing Meteor ${RELEASE}..."
+   if [ "$RELEASE" != "latest" ]; then
+     sed -i "s/^RELEASE=.*/RELEASE=${RELEASE}/" /tmp/meteor.sh
+   fi
+   chmod +x /tmp/meteor.sh
+   /tmp/meteor.sh
+   rm /tmp/meteor.sh
 
    # Bundle the Meteor app
    echo "Building the bundle...(this may take a while)"

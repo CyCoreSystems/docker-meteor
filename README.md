@@ -6,7 +6,7 @@
    * downloaded with `curl` from `BUNDLE_URL` (if supplied)
    * set `CURL_OPTS` if you need to pass additional parameters
  * Source-based build/execution
-   * Downloads latest Meteor tool at runtime (always the latest tool version, but apps run with their own versions)
+   * Downloads latest Meteor tool at runtime (always the latest tool version unless a `RELEASE` is specified, but apps run with their own versions)
    * Supply source at `SRC_DIR` (defaults to `/src/app`)
    * Supply source from `REPO` (git clone URL)
       * Optionally specify a `DEPLOY_KEY` file for SSH authentication to private repositories
@@ -66,7 +66,17 @@ docker run --rm \
   ulexus/meteor
 ```
 
+### local app source directory on host (/home/user/myapp) with specific Meteor release (1.0.5)
+```sh
+docker run --rm \
+  -e ROOT_URL=http://testsite.com \
+  -v /home/user/myapp:/src/app \
+  -e MONGO_URL=mongodb://mymongoserver.com:27017/appdb \
+  -e MONGO_OPLOG_URL=mongodb://mymongoserver.com:27017/local \
+  -e RELEASE=1.0.5 \
+  ulexus/meteor
+```
+
 ### Unit file
 
 There is also a sample systemd [unit file](meteor.myapp@.service) in the Github repository.
-
