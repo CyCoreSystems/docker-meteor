@@ -38,6 +38,7 @@ Host *
   StrictHostKeyChecking no
 ENDHERE
    fi
+   chmod 0600 /root/.ssh/deploy_key
 fi
 
 # Make sure critical directories exist
