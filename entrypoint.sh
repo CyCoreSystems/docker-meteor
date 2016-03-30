@@ -87,8 +87,7 @@ if [ -n "${METEOR_DIR}" ]; then
    if [ "$RELEASE" != "latest" ]; then
      sed -i "s/^RELEASE=.*/RELEASE=${RELEASE}/" /tmp/meteor.sh
    fi
-   chmod +x /tmp/meteor.sh
-   /tmp/meteor.sh
+   sh /tmp/meteor.sh
    rm /tmp/meteor.sh
 
    # Bundle the Meteor app
@@ -126,6 +125,12 @@ fi
 if [ -e ${BUNDLE_DIR}/programs/server ]; then
    echo "Installing NPM prerequisites..."
    pushd ${BUNDLE_DIR}/programs/server/
+
+   # Use a version of fibers which has a binary
+   mv npm-shrinkwrap.json old-shrinkwrap.json
+   cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
+
+   # Install all NPM packages
    npm install
    popd
 else
