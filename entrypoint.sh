@@ -5,8 +5,8 @@
 set -e
 
 # Default values
-: ${APP_DIR:="/var/www"}
-: ${SRC_DIR:="/src/app"}
+: ${APP_DIR:="/var/www"}      # Location of built Meteor app
+: ${SRC_DIR:="/src/app"}      # Location of Meteor app source
 : ${BRANCH:="master"}
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
 : ${PORT:="80"}
@@ -74,7 +74,7 @@ fi
 
 # See if we have a valid meteor source
 METEOR_DIR=$(find ${SRC_DIR} -type d -name .meteor -print |head -n1)
-if [ -n "${METEOR_DIR}" ]; then
+if [ -e "${METEOR_DIR}" ]; then
    echo "Meteor source found in ${METEOR_DIR}"
    cd ${METEOR_DIR}/..
 
@@ -115,8 +115,7 @@ fi
 
 # Locate the actual bundle directory
 # subdirectory (default)
-BUNDLE_DIR=$(find ${APP_DIR} -type d -name bundle -print |head -n1)
-if [ ! -n "${BUNDLE_DIR}" ]; then
+if [ ! -e ${BUNDLE_DIR:=$(find ${APP_DIR} -type d -name bundle -print |head -n1)} ]; then
    # No bundle inside app_dir; let's hope app_dir _is_ bundle_dir...
    BUNDLE_DIR=${APP_DIR}
 fi
@@ -127,8 +126,8 @@ if [ -e ${BUNDLE_DIR}/programs/server ]; then
    pushd ${BUNDLE_DIR}/programs/server/
 
    # Use a version of fibers which has a binary
-   mv npm-shrinkwrap.json old-shrinkwrap.json
-   cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
+   #mv npm-shrinkwrap.json old-shrinkwrap.json
+   #cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
 
    # Install all NPM packages
    npm install
