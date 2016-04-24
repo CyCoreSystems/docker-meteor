@@ -126,8 +126,8 @@ if [ -e ${BUNDLE_DIR}/programs/server ]; then
    pushd ${BUNDLE_DIR}/programs/server/
 
    # Use a version of fibers which has a binary
-   #mv npm-shrinkwrap.json old-shrinkwrap.json
-   #cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
+   mv npm-shrinkwrap.json old-shrinkwrap.json
+   cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
 
    # Install all NPM packages
    npm install
