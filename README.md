@@ -1,6 +1,6 @@
 ## Features:
 
- * Meteor 1.x package/bundle support
+ * Meteor 1.4+ package/bundle support
  * Bundle-based execution
    * directory referenced as `APP_DIR` (meteor build --directory); defaults to `/var/www`
    * downloaded with `curl` from `BUNDLE_URL` (if supplied)
