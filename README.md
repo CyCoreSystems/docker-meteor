@@ -1,3 +1,15 @@
+## Meteor 1.4
+
+The `latest` Docker tag refers to `legacy` right now, which means it will not
+work with Meteor version 1.4+
+
+If you wish to use a Meteor application 1.4+, you will need to use the `v1.4` Docker tag.
+
+If you wish to continue using versions of Meteor before 1.4, please switch to
+using the `legacy` tag.
+
+The `latest` Docker tag will switch to Meteor 1.4 soon.
+
 ## Features:
 
  * Meteor 1.x package/bundle support
