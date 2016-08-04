@@ -125,10 +125,6 @@ if [ -e ${BUNDLE_DIR}/programs/server ]; then
    echo "Installing NPM prerequisites..."
    pushd ${BUNDLE_DIR}/programs/server/
 
-   # Use a version of fibers which has a binary
-   mv npm-shrinkwrap.json old-shrinkwrap.json
-   cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
-
    # Install all NPM packages
    npm install
    popd
