@@ -158,7 +158,7 @@ fi
 if [ -f ${SETTINGS_FILE} ]; then
    METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
 fi
-if [ -n ${SETTINGS_URL} ]; then
+if [ "x${SETTINGS_URL}" != "x" ]; then
    TMP_SETTINGS=$(curl -s ${SETTINGS_URL})
    if [ $? -eq 0 ]; then
       METEOR_SETTINGS=${TMP_SETTINGS}
