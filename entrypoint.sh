@@ -99,6 +99,11 @@ if [ -e "${METEOR_DIR}" ]; then
    sh /tmp/meteor.sh
    rm /tmp/meteor.sh
 
+   if [ -f package.json ]; then
+      echo "Installing application-side NPM dependencies..."
+      npm install --production
+   fi
+
    # Bundle the Meteor app
    echo "Building the bundle...(this may take a while)"
    mkdir -p ${APP_DIR}
