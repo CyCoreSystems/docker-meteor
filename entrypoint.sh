@@ -8,6 +8,8 @@ set -e
 : ${APP_DIR:="/var/www"}      # Location of built Meteor app
 : ${SRC_DIR:="/src/app"}      # Location of Meteor app source
 : ${BRANCH:="master"}
+: ${SETTINGS_FILE:=""}        # Location of settings.json file
+: ${SETTINGS_URL:=""}         # Remote source for settings.json
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
 : ${PORT:="80"}
 : ${RELEASE:="latest"}
@@ -150,6 +152,20 @@ fi
 if [ ! -e ${BUNDLE_DIR}/main.js ]; then
    echo "Failed to locate main.js in ${BUNDLE_DIR}; cannot start application."
    exit 1
+fi
+
+# Process settings sources, if they exist
+if [ -f ${SETTINGS_FILE} ]; then
+   METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
+fi
+if [ -n ${SETTINGS_URL} ]; then
+   TMP_SETTINGS=$(curl -s ${SETTINGS_URL})
+   if [ $? -eq 0 ]; then
+      METEOR_SETTINGS=${TMP_SETTINGS}
+   else
+      echo "Failed to retrieve settings from URL (${SETTINGS_URL}); exiting."
+      exit 1
+   fi
 fi
 
 # Run meteor
