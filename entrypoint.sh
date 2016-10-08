@@ -156,12 +156,12 @@ fi
 
 # Process settings sources, if they exist
 if [ -f ${SETTINGS_FILE} ]; then
-   METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
+   export METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
 fi
 if [ "x${SETTINGS_URL}" != "x" ]; then
    TMP_SETTINGS=$(curl -s ${SETTINGS_URL})
    if [ $? -eq 0 ]; then
-      METEOR_SETTINGS=${TMP_SETTINGS}
+      export METEOR_SETTINGS=${TMP_SETTINGS}
    else
       echo "Failed to retrieve settings from URL (${SETTINGS_URL}); exiting."
       exit 1
