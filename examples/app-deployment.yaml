@@ -76,7 +76,7 @@ spec:
           value: mongodb://10.20.30.40:27017,10.20.30.41:27017,10.20.30.42:27017/myapp?replicaSet=prod
         - name: MONGO_OPLOG_URL
           value: mongodb://10.20.30.40:27017,10.20.30.41:27017,10.20.30.42:27017/myapp?replicaSet=prod
-          value: mongodb://209.51.167.36:27017,209.51.167.37:27017,209.51.167.38:27017/local?replicaSet=prod
+          value: mongodb://10.20.30.40:27017,10.20.30.41:27017,10.20.30.42:27017/local?replicaSet=prod
         volumeMounts:
         - name: "auth-git"
           readOnly: true
