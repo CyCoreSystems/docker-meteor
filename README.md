@@ -91,3 +91,23 @@ docker run --rm \
 ### Unit file
 
 There is also a sample systemd [unit file](meteor.myapp@.service) in the Github repository.
+
+### Build with bundled app
+
+```bash
+cd $app_source
+meteor build --directory /tmp/export-meteor/build
+cat >/tmp/export-meteor/Dockerfile <<ENDHERE
+FROM ulexus/meteor:v1.4
+COPY build /var/www
+ENDHERE
+cd /tmp/export-meteor
+docker build -t myapp .
+docker push myapp
+```
+
+### Kubernetes
+
+There is a complete example with build script of building and running a
+versioned container in kubernetes in the [examples](https://github.com/CyCoreSystems/docker-meteor/tree/v1.4/examples) directory.
+
