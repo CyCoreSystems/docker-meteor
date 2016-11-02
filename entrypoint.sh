@@ -5,8 +5,9 @@
 set -e
 
 # Default values
-: ${APP_DIR:="/var/www"}      # Location of built Meteor app
-: ${SRC_DIR:="/src/app"}      # Location of Meteor app source
+: ${HOME:="/home/meteor"}
+: ${APP_DIR:="${HOME}/www"}      # Location of built Meteor app
+: ${SRC_DIR:="${HOME}/src"}      # Location of Meteor app source
 : ${BRANCH:="master"}
 : ${SETTINGS_FILE:=""}        # Location of settings.json file
 : ${SETTINGS_URL:=""}         # Remote source for settings.json
@@ -28,19 +29,19 @@ if [ -n "${GITHUB_DEPLOY_KEY}" ]; then
    DEPLOY_KEY=$GITHUB_DEPLOY_KEY
 fi
 
-# If we are given a DEPLOY_KEY, copy it into /root/.ssh and
+# If we are given a DEPLOY_KEY, copy it into ${HOME}/.ssh and
 # setup a github rule to use it
 if [ -n "${DEPLOY_KEY}" ]; then
-   if [ ! -f /root/.ssh/deploy_key ]; then
-      mkdir -p /root/.ssh
-      cp ${DEPLOY_KEY} /root/.ssh/deploy_key
-      cat << ENDHERE >> /root/.ssh/config
+   if [ ! -f ${HOME}/.ssh/deploy_key ]; then
+      mkdir -p ${HOME}/.ssh
+      cp ${DEPLOY_KEY} ${HOME}/.ssh/deploy_key
+      cat << ENDHERE >> ${HOME}/.ssh/config
 Host *
-  IdentityFile /root/.ssh/deploy_key
+  IdentityFile ${HOME}/.ssh/deploy_key
   StrictHostKeyChecking no
 ENDHERE
    fi
-   chmod 0600 /root/.ssh/deploy_key
+   chmod 0600 ${HOME}/.ssh/deploy_key
 fi
 
 # Make sure critical directories exist
