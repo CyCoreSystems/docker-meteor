@@ -1,14 +1,12 @@
 ## Meteor 1.4
 
-The `latest` Docker tag refers to `legacy` right now, which means it will not
-work with Meteor version 1.4+
+The `latest` Docker tag and the `master` git branch are for Meteor 1.4+.  For
+prior versions of Meteor, please use the `legacy` tag and branch.
 
-If you wish to use a Meteor application 1.4+, you will need to use the `v1.4` Docker tag.
-
-If you wish to continue using versions of Meteor before 1.4, please switch to
-using the `legacy` tag.
-
-The `latest` Docker tag will switch to Meteor 1.4 soon.
+In order to keep the size of the image down, the `current` tag does _not_
+include `build-essential` tools.  If you are using modules which do not supply
+binary versions for your platform, please use the `build` tag, which does
+include `build-essential`.
 
 ## Features:
 
