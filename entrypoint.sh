@@ -5,9 +5,12 @@
 set -e
 
 # Default values
-: ${APP_DIR:="/var/www"}      # Location of built Meteor app
-: ${SRC_DIR:="/src/app"}      # Location of Meteor app source
+: ${HOME:="/home/meteor"}
+: ${APP_DIR:="${HOME}/www"}      # Location of built Meteor app
+: ${SRC_DIR:="${HOME}/src"}      # Location of Meteor app source
 : ${BRANCH:="master"}
+: ${SETTINGS_FILE:=""}        # Location of settings.json file
+: ${SETTINGS_URL:=""}         # Remote source for settings.json
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
 : ${PORT:="80"}
 : ${RELEASE:="latest"}
@@ -16,7 +19,7 @@ export MONGO_URL
 export PORT
 
 # If we were given arguments, run them instead
-if [ $? -gt 1 ]; then
+if [ $? -gt 0 ]; then
    exec "$@"
 fi
 
@@ -26,19 +29,19 @@ if [ -n "${GITHUB_DEPLOY_KEY}" ]; then
    DEPLOY_KEY=$GITHUB_DEPLOY_KEY
 fi
 
-# If we are given a DEPLOY_KEY, copy it into /root/.ssh and
+# If we are given a DEPLOY_KEY, copy it into ${HOME}/.ssh and
 # setup a github rule to use it
 if [ -n "${DEPLOY_KEY}" ]; then
-   if [ ! -f /root/.ssh/deploy_key ]; then
-      mkdir -p /root/.ssh
-      cp ${DEPLOY_KEY} /root/.ssh/deploy_key
-      cat << ENDHERE >> /root/.ssh/config
+   if [ ! -f ${HOME}/.ssh/deploy_key ]; then
+      mkdir -p ${HOME}/.ssh
+      cp ${DEPLOY_KEY} ${HOME}/.ssh/deploy_key
+      cat << ENDHERE >> ${HOME}/.ssh/config
 Host *
-  IdentityFile /root/.ssh/deploy_key
+  IdentityFile ${HOME}/.ssh/deploy_key
   StrictHostKeyChecking no
 ENDHERE
    fi
-   chmod 0600 /root/.ssh/deploy_key
+   chmod 0600 ${HOME}/.ssh/deploy_key
 fi
 
 # Make sure critical directories exist
@@ -78,31 +81,36 @@ if [ -e "${METEOR_DIR}" ]; then
    echo "Meteor source found in ${METEOR_DIR}"
    cd ${METEOR_DIR}/..
 
+   # Check Meteor version
+   echo "Checking Meteor version..."
+   RELEASE=$(cat .meteor/release | cut -f2 -d'@')
+   set +e # Allow the next command to fail
+   semver -r '>=1.3.1' $(echo $RELEASE |cut -d'.' -f1-3)
+   if [ $? -ne 0 ]; then
+      echo "Application's Meteor version ($RELEASE) is less than 1.3.1; please use ulexus/meteor:legacy"
+      exit 1
+   fi
+   set -e
+
    # Download Meteor installer
    echo "Downloading Meteor install script..."
    curl ${CURL_OPTS} -o /tmp/meteor.sh https://install.meteor.com/
 
    # Install Meteor tool
    echo "Installing Meteor ${RELEASE}..."
-   if [ "$RELEASE" != "latest" ]; then
-     sed -i "s/^RELEASE=.*/RELEASE=${RELEASE}/" /tmp/meteor.sh
-   fi
+   sed -i "s/^RELEASE=.*/RELEASE=${RELEASE}/" /tmp/meteor.sh
    sh /tmp/meteor.sh
    rm /tmp/meteor.sh
+
+   if [ -f package.json ]; then
+      echo "Installing application-side NPM dependencies..."
+      npm install --production
+   fi
 
    # Bundle the Meteor app
    echo "Building the bundle...(this may take a while)"
    mkdir -p ${APP_DIR}
-   set +e # Allow the next command to fail
    meteor build --directory ${APP_DIR}
-   if [ $? -ne 0 ]; then
-      echo "Building the bundle (old version)..."
-      set -e
-      # Old versions used 'bundle' and didn't support the --directory option
-      meteor bundle bundle.tar.gz
-      tar xf bundle.tar.gz -C ${APP_DIR}
-   fi
-   set -e
 fi
 
 # If we were given a BUNDLE_URL, download the bundle
@@ -122,13 +130,19 @@ fi
 
 # Install NPM modules
 if [ -e ${BUNDLE_DIR}/programs/server ]; then
-   echo "Installing NPM prerequisites..."
    pushd ${BUNDLE_DIR}/programs/server/
 
-   # Use a version of fibers which has a binary
-   mv npm-shrinkwrap.json old-shrinkwrap.json
-   cat old-shrinkwrap.json |jq -r 'setpath(["dependencies","fibers","resolved"]; "https://registry.npmjs.org/fibers/-/fibers-1.0.7.tgz")' > npm-shrinkwrap.json
+   # Check Meteor version
+   echo "Checking Meteor version..."
+   set +e # Allow the next command to fail
+   semver -r '>=1.3.1' $(cat config.json | jq .meteorRelease | tr -d '"' | cut -f2 -d'@' | cut -d'.' -f1-3)
+   if [ $? -ne 0 ]; then
+      echo "Application's Meteor version is less than 1.3.1; please use ulexus/meteor:legacy"
+      exit 1
+   fi
+   set -e
 
+   echo "Installing NPM prerequisites..."
    # Install all NPM packages
    npm install
    popd
@@ -139,6 +153,20 @@ fi
 if [ ! -e ${BUNDLE_DIR}/main.js ]; then
    echo "Failed to locate main.js in ${BUNDLE_DIR}; cannot start application."
    exit 1
+fi
+
+# Process settings sources, if they exist
+if [ -f "${SETTINGS_FILE}" ]; then
+   export METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
+fi
+if [ "x${SETTINGS_URL}" != "x" ]; then
+   TMP_SETTINGS=$(curl -s ${SETTINGS_URL})
+   if [ $? -eq 0 ]; then
+      export METEOR_SETTINGS=${TMP_SETTINGS}
+   else
+      echo "Failed to retrieve settings from URL (${SETTINGS_URL}); exiting."
+      exit 1
+   fi
 fi
 
 # Run meteor
