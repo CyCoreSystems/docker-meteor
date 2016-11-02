@@ -156,7 +156,7 @@ if [ ! -e ${BUNDLE_DIR}/main.js ]; then
 fi
 
 # Process settings sources, if they exist
-if [ -f ${SETTINGS_FILE} ]; then
+if [ -f "${SETTINGS_FILE}" ]; then
    export METEOR_SETTINGS=$(cat ${SETTINGS_FILE})
 fi
 if [ "x${SETTINGS_URL}" != "x" ]; then
