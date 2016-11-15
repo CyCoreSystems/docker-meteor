@@ -8,7 +8,7 @@ WORKDIR /home/meteor
 
 # Install git, curl
 RUN apt-get update && \
-   apt-get install -y git curl && \
+   apt-get install -y git curl bzip2 build-essential python && \
    (curl https://deb.nodesource.com/setup_4.x | sh) && \
    apt-get install -y nodejs jq && \
    apt-get clean && \
