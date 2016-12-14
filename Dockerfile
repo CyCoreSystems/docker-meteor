@@ -9,7 +9,7 @@ WORKDIR /home/meteor
 # Install git, curl
 RUN apt-get update && \
    apt-get install -y git curl build-essential && \
-   (curl https://deb.nodesource.com/setup_4.x | sh) && \
+   (curl https://deb.nodesource.com/setup_4.x | bash) && \
    apt-get install -y nodejs jq && \
    apt-get clean && \
    rm -Rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
