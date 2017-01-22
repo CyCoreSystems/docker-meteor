@@ -18,7 +18,7 @@ include `build-essential`.
    * set `CURL_OPTS` if you need to pass additional parameters
  * Source-based build/execution
    * Downloads latest Meteor tool at runtime (always the latest tool version unless a `RELEASE` is specified, but apps run with their own versions)
-   * Supply source at `SRC_DIR` (defaults to `/src/app`)
+   * Supply source at `SRC_DIR` (defaults to `/home/meteor/src`)
    * Supply source from `REPO` (git clone URL)
       * Optionally specify a `DEPLOY_KEY` file for SSH authentication to private repositories
       * Optionally specify a `BRANCH` is not the default `master` (can also be a tag name)
@@ -52,8 +52,9 @@ takes much longer and requires a much larger disk footprint.
 To utilize source mode, define one of `SRC_DIR` or `REPO`:
 
   - `SRC_DIR`
-      If you put your application source in the directory pointed to by `SRC_DIR` (`/home/meteor/www`, by default), this container will download the Meteor tool,
+      If you put your application source in the directory pointed to by `SRC_DIR` (`/home/meteor/src`, by default), this container will download the Meteor tool,
       build your application, bundle it, then execute it.  It is usually sufficient to simply pass `docker run` an argument like `-v /srv/myApp:/src/app`.
+
   - `REPO`
       If you populate the `REPO` environment variable, it is presumed that this is where your application source resides.  This container will
       `git pull` your `REPO`, change to `master` or the supplied `BRANCH` (which can also be a tag).  The source tree will be placed in
@@ -77,7 +78,7 @@ To utilize the pre-bundled mode, **DO NOT** define `SRC_DIR` or `REPO`.  Instead
 define one of `APP_DIR` or `BUNDLE_DIR`:
 
   - `APP_DIR`
-      If you put your bundled application in the directory pointed to by `APP_DIR` (`/target`, by default), this container will attempt to find a Meteor bundle
+      If you put your bundled application in the directory pointed to by `APP_DIR` (`/home/meteor/www`, by default), this container will attempt to find a Meteor bundle
       in this directory and then start Node to run that bundle.  The Meteor tool will not be installed (as a bundled Meteor app needs only Node).
       The default `APP_DIR` is `/home/meteor/www`, so you may attach that as a volume, for greatest simplicity.  Something like: `-v /srv/myApp:/home/meteor/www`.
   - `BUNDLE_URL`
@@ -105,7 +106,7 @@ docker run --rm \
 ```sh
 docker run --rm \
   -e ROOT_URL=http://testsite.com \
-  -v /home/user/myapp:/src/app \
+  -v /home/user/myapp:/home/meteor/src \
   -e MONGO_URL=mongodb://mymongoserver.com:27017/appdb \
   -e MONGO_OPLOG_URL=mongodb://mymongoserver.com:27017/local \
   ulexus/meteor
@@ -125,7 +126,7 @@ docker run --rm \
 ```sh
 docker run --rm \
   -e ROOT_URL=http://testsite.com \
-  -v /home/user/myapp:/src/app \
+  -v /home/user/myapp:/home/meteor/src \
   -e MONGO_URL=mongodb://mymongoserver.com:27017/appdb \
   -e MONGO_OPLOG_URL=mongodb://mymongoserver.com:27017/local \
   -e RELEASE=1.4.2.1 \
