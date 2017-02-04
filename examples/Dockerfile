@@ -1,2 +1,3 @@
 FROM ulexus/meteor:v1.4
-COPY .deploy /var/www
+COPY .deploy /home/meteor/www
+RUN chown -R meteor:meteor /home/meteor/

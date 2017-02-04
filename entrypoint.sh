@@ -88,7 +88,10 @@ if [ -e "${METEOR_DIR}" ]; then
    semver -r '>=1.3.1' $(echo $RELEASE |cut -d'.' -f1-3)
    if [ $? -ne 0 ]; then
       echo "Application's Meteor version ($RELEASE) is less than 1.3.1; please use ulexus/meteor:legacy"
-      exit 1
+
+      if [ -Z "${IGNORE_METEOR_VERSION}" ]; then
+         exit 1
+      fi
    fi
    set -e
 
@@ -138,7 +141,10 @@ if [ -e ${BUNDLE_DIR}/programs/server ]; then
    semver -r '>=1.3.1' $(cat config.json | jq .meteorRelease | tr -d '"' | cut -f2 -d'@' | cut -d'.' -f1-3)
    if [ $? -ne 0 ]; then
       echo "Application's Meteor version is less than 1.3.1; please use ulexus/meteor:legacy"
-      exit 1
+
+      if [ -Z "${IGNORE_METEOR_VERSION}" ]; then
+         exit 1
+      fi
    fi
    set -e
 

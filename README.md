@@ -53,7 +53,8 @@ To utilize source mode, define one of `SRC_DIR` or `REPO`:
 
   - `SRC_DIR`
       If you put your application source in the directory pointed to by `SRC_DIR` (`/home/meteor/src`, by default), this container will download the Meteor tool,
-      build your application, bundle it, then execute it.  It is usually sufficient to simply pass `docker run` an argument like `-v /srv/myApp:/home/meteor/src`.
+      build your application, bundle it, then execute it.  It is usually sufficient to simply pass `docker run` an argument like `-v /srv/myApp:/src/app`.
+
   - `REPO`
       If you populate the `REPO` environment variable, it is presumed that this is where your application source resides.  This container will
       `git pull` your `REPO`, change to `master` or the supplied `BRANCH` (which can also be a tag).  The source tree will be placed in
@@ -148,6 +149,7 @@ meteor build --directory /tmp/export-meteor/build
 cat >/tmp/export-meteor/Dockerfile <<ENDHERE
 FROM ulexus/meteor
 COPY build /home/meteor/www
+RUN chown -R meteor:meteor /home/meteor/
 ENDHERE
 cd /tmp/export-meteor
 docker build -t myapp .
