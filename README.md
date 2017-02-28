@@ -64,13 +64,12 @@ When the container is run, the appropriate version of the Meteor tool will be
 downloaded and installed, your application will be built/bundled, and then it
 will be run.  This process can take several *minutes* to complete.
 
-#### Running as root
+#### Running without root
 
 As of Meteor 1.4.2, running Meteor as root has been strongly dissuaded.  As a
 result, we now drop root privileges after starting the container.  This means
 that if you are bind-mounting your source or bundle directories, the files must
-be readable by the container's user.  In most cases, this means that the files
-must be 0644 and directories must be 0755.
+be **readable** and **writable** by the container's unprivileged user (**UID 1000**).
 
 ### Pre-bundled mode
 
