@@ -48,7 +48,7 @@ echo -e "\033[0;32m✓ \033[0m \033[0;34mPUBLISHED\033[0m ${IMAGE}:v${CUR}"
 echo $CUR > .version
 
 # Update Kubernetes Deployment
-kubectl --context=webapps patch deployment/${DEPLOYMENT} -p '{"spec":{"template":{"spec":{"containers":[{"name": "meteor","image":"'${IMAGE}:v${CUR}'"}]}}}}'
+kubectl --context=webapps set image deployment/${DEPLOYMENT} meteor=${IMAGE}:v${CUR}
 
 if [ $? -ne 0 ]; then
    echo -e "\033[0;31m✗ UPDATE FAILED:\033[0m"
