@@ -116,10 +116,10 @@ if [ -e "${METEOR_DIR}" ]; then
    meteor build --directory ${APP_DIR}
 fi
 
-# If we were given a COMPRESSED_APP_DIR, extract the bundle
+# If we were given a BUNDLE_FILE, extract the bundle
 # from there.
-if [ -n "${COMPRESSED_APP_DIR}" ]; then
-   tar xf ${COMPRESSED_APP_DIR} -C ${APP_DIR}
+if [ -n "${BUNDLE_FILE}" ]; then
+   tar xf ${BUNDLE_FILE} -C ${APP_DIR}
 fi
 
 
