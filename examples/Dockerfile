@@ -1,3 +1,3 @@
-FROM ulexus/meteor:v1.4
+FROM ulexus/meteor
 COPY .deploy /home/meteor/www
-RUN chown -R meteor:meteor /home/meteor/
+RUN chown -R 1000:1000 /home/meteor/
