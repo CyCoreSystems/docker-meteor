@@ -97,7 +97,7 @@ if [ -e "${METEOR_DIR}" ]; then
 
    # Download Meteor installer
    echo "Downloading Meteor install script..."
-   curl ${CURL_OPTS} -d "release=${RELEASE}" -o /tmp/meteor.sh https://install.meteor.com
+   curl ${CURL_OPTS} -o /tmp/meteor.sh https://install.meteor.com?release=${RELEASE}
 
    # Install Meteor tool
    echo "Installing Meteor ${RELEASE}..."
