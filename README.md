@@ -3,10 +3,16 @@
 The `latest` Docker tag and the `master` git branch are for Meteor 1.4+.  For
 prior versions of Meteor, please use the `legacy` tag and branch.
 
+## Build tag
+
 In order to keep the size of the image down, the `current` tag does _not_
 include `build-essential` tools.  If you are using modules which do not supply
 binary versions for your platform, please use the `build` tag, which does
-include `build-essential`.
+include `build-essential`. 
+
+**NOTE** `build-essential` is necessary if you use the `bcrypt` module, which is
+used by the `accounts-password` package, so if you are using password-based
+logins on your site, you must use the `:build` Docker tag (`build` git branch).
 
 ## Features:
 
@@ -175,6 +181,6 @@ docker push myapp
 
 There is a complete example with build script of building and running a
 versioned container in kubernetes in the
-[examples](https://github.com/CyCoreSystems/docker-meteor/tree/v1.4/examples)
+[examples](https://github.com/CyCoreSystems/docker-meteor/tree/master/examples)
 directory.
 
