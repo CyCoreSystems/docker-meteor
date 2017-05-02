@@ -97,11 +97,10 @@ if [ -e "${METEOR_DIR}" ]; then
 
    # Download Meteor installer
    echo "Downloading Meteor install script..."
-   curl ${CURL_OPTS} -o /tmp/meteor.sh https://install.meteor.com/
+   curl ${CURL_OPTS} -o /tmp/meteor.sh https://install.meteor.com?release=${RELEASE}
 
    # Install Meteor tool
    echo "Installing Meteor ${RELEASE}..."
-   sed -i "s/^RELEASE=.*/RELEASE=${RELEASE}/" /tmp/meteor.sh
    sh /tmp/meteor.sh
    rm /tmp/meteor.sh
 
