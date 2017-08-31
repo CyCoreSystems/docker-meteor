@@ -1,6 +1,4 @@
-# DOCKER-VERSION 1.8.1
-# METEOR-VERSION 1.2.1
-FROM debian:jessie
+FROM debian:stretch
 
 # Create user meteor who will run all entrypoint instructions
 RUN useradd meteor -G staff -m -s /bin/bash
@@ -8,7 +6,7 @@ WORKDIR /home/meteor
 
 # Install git, curl
 RUN apt-get update && \
-   apt-get install -y git curl && \
+   apt-get install -y git curl bzip2 gnupg libcap2-bin && \
    (curl https://deb.nodesource.com/setup_4.x | bash) && \
    apt-get install -y nodejs jq && \
    apt-get clean && \
