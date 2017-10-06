@@ -107,7 +107,7 @@ if [ -e "${METEOR_DIR}" ]; then
 
    if [ -f package.json ]; then
       echo "Installing application-side NPM dependencies..."
-      npm install --production
+      meteor npm install --production
    fi
 
    # Bundle the Meteor app
