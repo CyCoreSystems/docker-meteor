@@ -9,6 +9,7 @@ set -e
 : ${APP_DIR:="${HOME}/www"}      # Location of built Meteor app
 : ${SRC_DIR:="${HOME}/src"}      # Location of Meteor app source
 : ${BRANCH:="master"}
+: ${NODE_OPTIONS:=""}         # Options to pass to Node when executing app
 : ${SETTINGS_FILE:=""}        # Location of settings.json file
 : ${SETTINGS_URL:=""}         # Remote source for settings.json
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
@@ -106,7 +107,7 @@ if [ -e "${METEOR_DIR}" ]; then
 
    if [ -f package.json ]; then
       echo "Installing application-side NPM dependencies..."
-      npm install --production
+      meteor npm install --production
    fi
 
    # Bundle the Meteor app
@@ -184,4 +185,4 @@ fi
 # Run meteor
 cd ${BUNDLE_DIR}
 echo "Starting Meteor Application..."
-exec node ./main.js
+exec node ${NODE_OPTIONS} ./main.js
