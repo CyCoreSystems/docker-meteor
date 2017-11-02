@@ -6,7 +6,7 @@ WORKDIR /home/meteor
 
 # Install git, curl
 RUN apt-get update && \
-   apt-get install -y git curl build-essential bzip2 gnupg libcap2-bin && \
+   apt-get install -y git curl build-essential bzip2 gnupg libcap2-bin python && \
    (curl https://deb.nodesource.com/setup_4.x | bash) && \
    apt-get install -y nodejs jq && \
    apt-get clean && \
@@ -24,7 +24,7 @@ COPY known_hosts .ssh/known_hosts
 RUN chown -R meteor:meteor .ssh /usr/bin/entrypoint.sh
 
 # Allow node to listen to port 80 even when run by non-root user meteor
-RUN setcap 'cap_net_bind_service=+ep' /usr/bin/nodejs
+RUN setcap 'cap_net_bind_service=+ep' /usr/bin/node
 
 EXPOSE 80
 
