@@ -19,6 +19,9 @@ set -e
 export MONGO_URL
 export PORT
 
+# MIN_METEOR_RELEASE is the minimum Meteor version which can be run with this script
+MIN_METEOR_RELEASE=1.4.0
+
 # If we were given arguments, run them instead
 if [ $? -gt 0 ]; then
    exec "$@"
@@ -49,6 +52,32 @@ fi
 mkdir -p $APP_DIR
 mkdir -p $SRC_DIR
 
+function checkver {
+   set +e # Allow commands inside this function to fail
+
+   # Strip "-" suffixes
+   local VER=$(echo $1 | cut -d'-' -f1)
+
+   # Format to x.y.z
+   if [ $(echo $1 | wc -c) -lt 5 ]; then
+      # if version is x.y, bump it to x.y.0
+      RELEASE_VER=${VER}.0
+   else
+      # If version is x.y.z.A, truncate it to x.y.z
+      RELEASE_VER=$(echo $VER |cut -d'.' -f1-3)
+   fi
+
+   semver -r '>='$MIN_METEOR_RELEASE $RELEASE_VER >/dev/null
+   if [ $? -ne 0 ]; then
+      echo "Application's Meteor version ($1) is less than ${MIN_METEOR_RELEASE}; please use ulexus/meteor:legacy"
+
+      if [ -z "${IGNORE_METEOR_VERSION}" ]; then
+         exit 1
+      fi
+   fi
+
+   set -e
+}
 
 # getrepo pulls the supplied git repository into $SRC_DIR
 function getrepo {
@@ -85,22 +114,7 @@ if [ -e "${METEOR_DIR}" ]; then
    # Check Meteor version
    echo "Checking Meteor version..."
    RELEASE=$(cat .meteor/release | cut -f2 -d'@')
-
-   # HACK: if version is x.y, bump it to x.y.0 to work around faulty semver
-   if [ $(echo $RELEASE | wc -c) -lt 5 ]; then
-      RELEASE=${RELEASE}.0
-   fi
-
-   set +e # Allow the next command to fail
-   semver -r '>=1.3.1' $(echo $RELEASE |cut -d'.' -f1-3)
-   if [ $? -ne 0 ]; then
-      echo "Application's Meteor version ($RELEASE) is less than 1.3.1; please use ulexus/meteor:legacy"
-
-      if [ -Z "${IGNORE_METEOR_VERSION}" ]; then
-         exit 1
-      fi
-   fi
-   set -e
+   checkver $RELEASE
 
    # Download Meteor installer
    echo "Downloading Meteor install script..."
@@ -150,16 +164,8 @@ if [ -e ${BUNDLE_DIR}/programs/server ]; then
 
    # Check Meteor version
    echo "Checking Meteor version..."
-   set +e # Allow the next command to fail
-   semver -r '>=1.3.1' $(cat config.json | jq .meteorRelease | tr -d '"' | cut -f2 -d'@' | cut -d'.' -f1-3)
-   if [ $? -ne 0 ]; then
-      echo "Application's Meteor version is less than 1.3.1; please use ulexus/meteor:legacy"
-
-      if [ -Z "${IGNORE_METEOR_VERSION}" ]; then
-         exit 1
-      fi
-   fi
-   set -e
+   set +e # Allow the next commands to fail
+   checkver $(cat config.json | jq -r .meteorRelease | cut -f2 -d'@')
 
    echo "Installing NPM prerequisites..."
    # Install all NPM packages

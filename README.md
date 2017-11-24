@@ -1,4 +1,4 @@
-## Meteor 1.4
+## Meteor 1.4+
 
 The `latest` Docker tag and the `master` git branch are for Meteor 1.4+.  For
 prior versions of Meteor, please use the `legacy` tag and branch.
@@ -32,7 +32,7 @@ logins on your site, you must use the `:build` Docker tag (`build` git branch).
  * References your external MongoDB database
    * Uses Docker links (i.e. `MONGO_PORT`...)
    * Explicit Mongo URLs by at `MONGO_URL`
-   * NOTE: This does NOT set `MONGO_OPLOG_URL`.  There were too many potention complications.  As a result, unless you explicitly set `MONGO_OPLOG_URL`, Meteor will fall back to a polling-based approach to database synchronization.  Note that oplog tailing requires a working replica set on your MongoDB server as well as access to the `local` database.
+   * NOTE: This does NOT set `MONGO_OPLOG_URL`.  There were too many potential complications.  As a result, unless you explicitly set `MONGO_OPLOG_URL`, Meteor will fall back to a polling-based approach to database synchronization.  Note that oplog tailing requires a working replica set on your MongoDB server as well as access to the `local` database.
  * Optionally specify the port on which the web server should run (`PORT`); defaults to 80
  * Non-root location of Meteor tree; the script will search for the first .meteor directory
  * _NOTE_: PhantomJS is no longer pre-installed.  This package was swelling the size of the image by 50%, and it is not maintainable with the standard Docker Node images.  Instead, please use one of the docker-friendly (read port-based) spiderable packages on Meteor, such as [ongoworks:spiderable](https://atmospherejs.com/ongoworks/spiderable);  if there is demand, please create an issue on Github, and I'll see about managing a separate branch for it.
