@@ -85,6 +85,12 @@ if [ -e "${METEOR_DIR}" ]; then
    # Check Meteor version
    echo "Checking Meteor version..."
    RELEASE=$(cat .meteor/release | cut -f2 -d'@')
+
+   # HACK: if version is x.y, bump it to x.y.0 to work around faulty semver
+   if [ $(echo $RELEASE | wc -c) -lt 5 ]; then
+      RELEASE=${RELEASE}.0
+   fi
+
    set +e # Allow the next command to fail
    semver -r '>=1.3.1' $(echo $RELEASE |cut -d'.' -f1-3)
    if [ $? -ne 0 ]; then
