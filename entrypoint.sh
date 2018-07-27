@@ -13,7 +13,7 @@ set -e
 : ${SETTINGS_FILE:=""}        # Location of settings.json file
 : ${SETTINGS_URL:=""}         # Remote source for settings.json
 : ${MONGO_URL:="mongodb://${MONGO_PORT_27017_TCP_ADDR}:${MONGO_PORT_27017_TCP_PORT}/${DB}"}
-: ${PORT:="80"}
+: ${PORT:="3000"}
 : ${RELEASE:="latest"}
 
 export MONGO_URL
