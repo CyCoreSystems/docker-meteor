@@ -1,3 +1,23 @@
+## Meteor 1.8+
+
+**DEPRECATION NOTICE**
+
+For more modern Meteor versions, it is recommended that you use a newer
+mechanism.  We have developed a multi-stage Dockerfile which provides:
+
+  - much faster container startup
+  - more reliable builds
+  - better CI/CD compatibility
+  - better version support of Node
+
+To generate a multi-stage Dockerfile for your Meteor app, you can use the
+[meteor-dockerfilegen](https://github.com/CyCoreSystems/go-meteor) tool.  Binary
+releases of this tool are located [here](https://github.com/CyCoreSystems/go-meteor/releases).
+
+This tool reads your Meteor application and builds the Dockerfile with
+appropriate versions of Node and Meteor, as specified by your Meteor
+application's metadata.
+
 ## Meteor 1.4+
 
 The `latest` Docker tag and the `master` git branch are for Meteor 1.4+.  For
