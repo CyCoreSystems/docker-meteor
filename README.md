@@ -1,9 +1,10 @@
 ## Meteor 1.8+
 
-**DEPRECATION NOTICE**
+We are working on a more modern system for this package which will integrate the
+benefits of the multi-stage builder.  In the mean time, however, I invite you to
+take a look at our new Dockerfile generator.
 
-For more modern Meteor versions, it is recommended that you use a newer
-mechanism.  We have developed a multi-stage Dockerfile which provides:
+We have developed a multi-stage Dockerfile which provides:
 
   - much faster container startup
   - more reliable builds
